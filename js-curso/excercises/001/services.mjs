@@ -1,37 +1,31 @@
+import { error } from "node:console";
 import fs from "node:fs";
 
-const handleFile =  fs;
-
-const exists = handleFile.existsSync("./text-file.txt");
-
 function createFile (content) {
-    handleFile.writeFile("./text-file.txt", content, "utf-8", (err) => {
+    fs.writeFile("./text-file.txt", content, "utf-8", (err) => {
         if (err) {
-            console.log(err.message);
-            return
+            return error(err.message);
         }
-        console.log('created with success!');
+        return console.log('created with success!');
     })
 }
 
 function readFile () {
-    if (exists === true) {
-        handleFile.readFile('./text-file.txt', 'utf-8', (err, data) => {
+    if (fs.existsSync("./text-file.txt") === true) {
+        fs.readFile('./text-file.txt', 'utf-8', (err, data) => {
             if (err) {
-                console.log(err.message);
-                return
+                return error(err.message);
             }
-            console.log(data.toString()); 
+            return console.log(`readFile() => "${data}"`); 
         })
     } else {
-        console.log("file is not exists!");
-        
+        return error("file is not exists!");
     }
 }
 
 function deleteFile() {
-    if (exists === true) {
-        handleFile.unlink('./text-file.txt', (err) => {
+    if (fs.existsSync("./text-file.txt") === true) {
+        fs.unlink('./text-file.txt', (err) => {
             if (err) {
                 console.log(err.message)
                 return;
